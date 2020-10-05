@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+checkavailable.py
+output/
+
+# vscode
+launch.json
