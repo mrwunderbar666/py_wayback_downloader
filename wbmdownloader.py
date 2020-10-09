@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+import sys
 from urllib.parse import urlparse
 import concurrent.futures
 import datetime
@@ -15,7 +16,7 @@ def download_archive(input_list):
     file_url_parsed = urlparse(file_url)
 
     file_path, file_name = os.path.split(file_url_parsed.path)
-    file_path = os.path.join("output", base_url_parsed.netloc, file_timestamp, *file_path.split('/'))
+    file_path = os.path.join("output", base_domain, file_timestamp, *file_path.split('/'))
 
     if file_name == '':
         file_name = 'index.html'
@@ -53,8 +54,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.url is None:
-        pass
+        sys.exit(0)
     else: base_url = args.url
+
+    if base_url.startswith('http'):
+        base_domain = urlparse(base_url).netloc
+    else: 
+        base_domain = urlparse(base_url).path
 
     if args.tsfrom is None:
         ts_from = datetime.date.today() - datetime.timedelta(days=365)
@@ -73,7 +79,7 @@ if __name__ == '__main__':
     else: n_threads = args.threads
 
     request_url =  "https://web.archive.org/cdx/search/xd"
-    base_url_parsed = urlparse(base_url)
+    
 
     payload = {'collapse': 'digest',
                 'gzip': "false",
@@ -129,10 +135,10 @@ if __name__ == '__main__':
 
     if args.onlyjson is True:
         os.makedirs(os.path.join('output'), exist_ok=True)
-        with open(os.path.join('output', base_url_parsed.netloc + '.json'), 'w') as f:
+        with open(os.path.join('output', base_domain + '.json'), 'w') as f:
             f.write(json.dumps(json_response, indent=4, sort_keys=True))
-        print(f'List output stored to: {os.path.join("output", base_url_parsed.netloc + ".json")}')
-        pass
+        print(f'List output stored to: {os.path.join("output", base_domain + ".json")}')
+        sys.exit(0)
 
     with tqdm(total=len(download_list), unit='urls') as pbar:
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_threads) as executor:
