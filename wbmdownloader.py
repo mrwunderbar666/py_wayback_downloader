@@ -121,12 +121,14 @@ if __name__ == '__main__':
         print(r.status_code)
         print('Headers')
         print(r.headers)
-        pass
+        print('Content')
+        print(r.content)
+        sys.exit(1)
 
     print('Got response!')
     print(r.status_code)
 
-    json_response = json.loads(r.content)
+    json_response = r.json()
     if len(json_response) == 0:
         print('No results... maybe url wrong? Maybe timestamps too narrow?')
 
