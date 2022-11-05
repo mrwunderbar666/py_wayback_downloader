@@ -73,6 +73,10 @@ The most useful ones are `original` (original url path) and `mimetype` (file typ
 python wbmdownloader.py http://example.com --filter original:.*article.* --from 200703 --to 200704 --threads 8
 ```
 
+# URL Extractor
+
+The script `urlextractor.py` extracts all URLs that can be found in the downloaded files. At this stage, the script is very simple and dumps all extracted URLs into a JSON file. 
+
 
 # Contribute & Issues
 
