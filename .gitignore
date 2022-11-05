@@ -133,3 +133,6 @@ output/
 
 # vscode
 launch.json
+
+*.json
+*.log
