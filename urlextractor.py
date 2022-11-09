@@ -66,7 +66,7 @@ if __name__ == '__main__':
                 urls += extract_urls(html, url_pattern)
                 urls = list(set(urls))
             except Exception as e:
-                errors.append({f'{html}': f'e'})
+                errors.append({f'{html}': f'{e}'})
             finally:
                 pbar.update(1)
 
